@@ -1,0 +1,137 @@
+# WordPress Blank Pot
+# Copyright (C) 2014 ...
+# This file is distributed under the GNU General Public License v2 or later.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: "
+"Telefication\n"
+"POT-Creation-Date: "
+"2018-01-30 15:18+0330\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Your "
+"Name <you@example.com>\n"
+"Language-Team: "
+"Telefication\n"
+"Report-Msgid-Bugs-To: "
+"Translator Name "
+"<translations@example."
+"com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/"
+"plain; charset=UTF-8\n"
+"Content-Transfer-"
+"Encoding: 8bit\n"
+"Plural-Forms: "
+"nplurals=2; plural=n != "
+"1;\n"
+"X-Textdomain-Support: "
+"yesX-Generator: Poedit "
+"1.6.4\n"
+"X-Poedit-SourceCharset: "
+"UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;esc_html_e;"
+"esc_html_x:1,2c;"
+"esc_html__;esc_attr_e;"
+"esc_attr_x:1,2c;"
+"esc_attr__;_ex:1,2c;"
+"_nx:4c,1,2;"
+"_nx_noop:4c,1,2;_x:1,2c;"
+"_n:1,2;_n_noop:1,2;"
+"__ngettext:1,2;"
+"__ngettext_noop:1,2;_c,"
+"_nc:4c,1,2\n"
+"X-Poedit-Basepath: ..\n"
+"Language: en_US\n"
+"X-Generator: Poedit "
+"2.0.4\n"
+"X-Poedit-"
+"SearchPath-0: .\n"
+
+#: admin/class-telefication-admin.php:87
+msgid ""
+"Telefication Settings"
+msgstr ""
+
+#: admin/class-telefication-admin.php:88
+msgid "Telefication"
+msgstr ""
+
+#: admin/class-telefication-admin.php:122
+msgid "General Setting"
+msgstr ""
+
+#: admin/class-telefication-admin.php:129
+msgid "Telefication Bot ID"
+msgstr ""
+
+#: admin/class-telefication-admin.php:137
+msgid ""
+"Only Woocommerce Orders"
+msgstr ""
+
+#: admin/class-telefication-admin.php:171
+msgid ""
+"Join to @teleficationbot "
+"at Telegram to receive "
+"notifications."
+msgstr ""
+
+#: admin/class-telefication-admin.php:184
+msgid ""
+"Please enter your "
+"Telefication bot id."
+msgstr ""
+
+#: admin/class-telefication-admin.php:203
+msgid ""
+"⚠ Woocommerce is not "
+"active!"
+msgstr ""
+
+#: admin/class-telefication-admin.php:208
+msgid ""
+"If enabled, you receive "
+"only woocommerce new "
+"orders notification."
+msgstr ""
+
+#: admin/partials/telefication-admin-display.php:17
+msgid ""
+"Telefication Setting"
+msgstr ""
+
+#: admin/partials/telefication-admin-display.php:29
+msgid ""
+"If you like Telefication "
+"please leave us a <a "
+"href=\"#\" target="
+"\"_blank\">★★★★★</a> "
+"rating. A huge thank you "
+"from us in advance!"
+msgstr ""
+
+#: includes/class-telefication.php:213
+msgid "Name: "
+msgstr ""
+
+#: includes/class-telefication.php:214
+msgid "City: "
+msgstr ""
+
+#: includes/class-telefication.php:215
+msgid "Phone: "
+msgstr ""
+
+#: includes/class-telefication.php:216
+msgid "Total: "
+msgstr ""
+
+#: includes/class-telefication.php:234
+msgid "New order: "
+msgstr ""
+
+#: includes/class-telefication.php:237
+msgid "Order data: "
+msgstr ""
