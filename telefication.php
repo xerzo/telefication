@@ -11,7 +11,7 @@
  * Plugin Name:       Telefication
  * Plugin URI:        https://telefication.ir/wordpress-plugin
  * Description:       Send notifications to users via @teleficationbot (a telegram robot). you can start it here <a href="https://t.me/teleficationbot">Telefication Bot</a>
- * Version:           1.2.0
+ * Version:           1.2.1
  * Author:            Foad Tahmasebi
  * Author URI:        http://daskhat.ir/
  * Text Domain:       telefication
@@ -40,7 +40,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Currently plugin version.
  */
-define( 'TELEFICATION_VERSION', '1.1.0' );
+define( 'TELEFICATION_VERSION', '1.2.1' );
 
 /**
  * Plugin basename.

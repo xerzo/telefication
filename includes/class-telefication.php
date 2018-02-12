@@ -195,7 +195,7 @@ class Telefication {
 
 		// check for adding email body option
 		if ( isset( $this->options['send_email_body'] ) && '1' == $this->options['send_email_body'] ) {
-			$message .= $email_args['message'] . "\n\n";
+			$message .= strip_tags( $email_args['message'], '<b><i><a><code><pre>' ) . "\n\n";
 		}
 
 		$message .= site_url();
