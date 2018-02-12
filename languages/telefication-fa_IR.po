@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Telefication\n"
-"POT-Creation-Date: 2018-02-02 02:17+0330\n"
-"PO-Revision-Date: 2018-02-02 02:20+0330\n"
+"POT-Creation-Date: 2018-02-12 14:00+0330\n"
+"PO-Revision-Date: 2018-02-12 14:04+0330\n"
 "Last-Translator: \n"
 "Language-Team: Telefication\n"
 "Language: fa_IR\n"
@@ -50,36 +50,53 @@ msgid "Email(s):"
 msgstr "ایمیل‌ها:"
 
 #: admin/class-telefication-admin.php:188
+msgid "Display Recipient Email"
+msgstr "نمایش ایمیل گیرنده"
+
+#: admin/class-telefication-admin.php:196
+msgid "Send Email Body"
+msgstr "ارسال متن اصلی ایمیل"
+
+#: admin/class-telefication-admin.php:204
 msgid "Only Woocommerce Orders"
 msgstr "فقط برای سفارشات ووکامرس"
 
-#: admin/class-telefication-admin.php:235
+#: admin/class-telefication-admin.php:251
 #, php-format
 msgid "Join to %s at Telegram to receive notifications."
 msgstr ""
 "برای دریافت پیامها باید در ربات تلگرام %s عضو شوید و یک آی دی دریافت کنید."
 
-#: admin/class-telefication-admin.php:249
+#: admin/class-telefication-admin.php:265
 msgid "Send test message"
 msgstr "ارسال پیام آزمایشی"
 
-#: admin/class-telefication-admin.php:250
+#: admin/class-telefication-admin.php:266
 msgid "Please enter your Telefication bot id."
 msgstr "لطفا آی دی دریافتی از ربات تلفیکیشن را وارد کنید."
 
-#: admin/class-telefication-admin.php:269
+#: admin/class-telefication-admin.php:285
 msgid "⚠ Woocommerce is not active!"
 msgstr "⚠ ووکامرس فعال نیست!"
 
-#: admin/class-telefication-admin.php:274
+#: admin/class-telefication-admin.php:290
 msgid ""
-"If enabled, you receive only woocommerce new orders notification. (on "
+"If enabled, you will receive only woocommerce new orders notification. (on "
 "woocommerce thank you page)"
 msgstr ""
-"اگر فعال شود، فقط سفارشات جدید مربوط به ووکامرس ارسال میشود. (در صفحه تشکر "
-"ووکامرس ارسال میشود)"
+"اگر فعال شود، فقط سفارشات جدید مربوط به ووکامرس ارسال خواهد شد. (در صفحه "
+"تشکر ووکامرس ارسال میشود)"
 
-#: admin/class-telefication-admin.php:291
+#: admin/class-telefication-admin.php:311
+msgid "If enabled, you will receive email body too."
+msgstr "اگر فعال شود، شما متن اصلی ایمیل را هم دریافت میکنید."
+
+#: admin/class-telefication-admin.php:330
+msgid "If enabled, the recipient email will be added to notifications."
+msgstr ""
+"اگر فعال شود، آدرس ایمیل گیرنده ایمیل در اطلاع رسانی نمایش داده میشود."
+
+#: admin/class-telefication-admin.php:345
 msgid ""
 "Notify me only of the emails that are sent to this list. (Comma separated.) "
 "<br> Leave it empty if you want to get all notifications."
@@ -91,7 +108,7 @@ msgstr ""
 msgid "Telefication Setting"
 msgstr "تنظیمات تلفیکیشن"
 
-#: admin/partials/telefication-admin-display.php:31
+#: admin/partials/telefication-admin-display.php:32
 #, php-format
 msgid ""
 "If you like Telefication please leave us a %s rating. A huge thank you from "
@@ -100,27 +117,31 @@ msgstr ""
 "اگر تلفیکیشن را دوست داشتید لطفا امتیاز %s بدهید. ما نهایت تشکر را از شما "
 "داریم!"
 
-#: includes/class-telefication.php:222
+#: admin/partials/telefication-admin-display.php:38
+msgid "We will be happy if you let us know your suggestions."
+msgstr "ما خیلی خوشحال میشویم اگر پیشنهاداتتان را با ما در میان بگذارید."
+
+#: includes/class-telefication.php:231
 msgid "Name: "
 msgstr "نام: "
 
-#: includes/class-telefication.php:223
+#: includes/class-telefication.php:232
 msgid "City: "
 msgstr "شهر: "
 
-#: includes/class-telefication.php:224
+#: includes/class-telefication.php:233
 msgid "Phone: "
 msgstr "تلفن: "
 
-#: includes/class-telefication.php:225
+#: includes/class-telefication.php:234
 msgid "Total: "
 msgstr "کل: "
 
-#: includes/class-telefication.php:243
+#: includes/class-telefication.php:252
 msgid "New order: "
 msgstr "سفارش جدید: "
 
-#: includes/class-telefication.php:246
+#: includes/class-telefication.php:255
 msgid "Billing data: "
 msgstr "اطلاعات پرداخت: "
 
