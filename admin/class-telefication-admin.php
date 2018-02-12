@@ -184,6 +184,22 @@ class Telefication_Admin {
 		);
 
 		add_settings_field(
+			'display_recipient_email',
+			__( 'Display Recipient Email', 'telefication' ),
+			array( $this, 'display_recipient_email_callback' ),
+			'telefication-setting',
+			'general_setting_section'
+		);
+
+		add_settings_field(
+			'send_email_body',
+			__( 'Send Email Body', 'telefication' ),
+			array( $this, 'send_email_body_callback' ),
+			'telefication-setting',
+			'general_setting_section'
+		);
+
+		add_settings_field(
 			'is_woocommerce_only',
 			__( 'Only Woocommerce Orders', 'telefication' ),
 			array( $this, 'woocommerce_only_callback' ),
@@ -271,10 +287,48 @@ class Telefication_Admin {
 
 		printf(
 			'<input type="checkbox" id="is_woocommerce_only" name="telefication[is_woocommerce_only]" value="1" %s/>' .
-			'<label for="is_woocommerce_only">' . __( 'If enabled, you receive only woocommerce new orders notification. (on woocommerce thank you page)', 'telefication' ) . '</label>' .
+			'<label for="is_woocommerce_only">' . __( 'If enabled, you will receive only woocommerce new orders notification. (on woocommerce thank you page)', 'telefication' ) . '</label>' .
 			'%s',
 			isset( $checked ) ? $checked : '',
 			isset( $woocommerce_is_active ) ? $woocommerce_is_active : ''
+		);
+
+	}
+
+	/**
+	 * Generate send email body option checkbox field
+	 *
+	 * @since 1.2.0
+	 */
+	public function send_email_body_callback() {
+
+		if ( isset( $this->options['send_email_body'] ) ) {
+			$checked = checked( 1, $this->options['send_email_body'], false );
+		}
+
+		printf(
+			'<input type="checkbox" id="send_email_body" name="telefication[send_email_body]" value="1" %s/>' .
+			'<label for="send_email_body">' . __( 'If enabled, you will receive email body too.', 'telefication' ) . '</label>',
+			isset( $checked ) ? $checked : ''
+		);
+
+	}
+
+	/**
+	 * Generate display recipient email option checkbox field
+	 *
+	 * @since 1.2.0
+	 */
+	public function display_recipient_email_callback() {
+
+		if ( isset( $this->options['display_recipient_email'] ) ) {
+			$checked = checked( 1, $this->options['display_recipient_email'], false );
+		}
+
+		printf(
+			'<input type="checkbox" id="display_recipient_email" name="telefication[display_recipient_email]" value="1" %s/>' .
+			'<label for="display_recipient_email">' . __( 'If enabled, the recipient email will be added to notifications.', 'telefication' ) . '</label>',
+			isset( $checked ) ? $checked : ''
 		);
 
 	}

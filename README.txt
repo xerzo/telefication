@@ -2,15 +2,17 @@
 Contributors: arshen
 Tags: telegram, wordpress, notification, woocommerce, email, order
 Requires at least: 3.1.0
-Tested up to: 4.9.2
+Tested up to: 4.9.4
 Requires PHP: 5.6
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Get a notification on Telegram by Telefication bot. If you want, You can get notified just for new Woocommerce orders.
 
 == Description ==
+
+## Telegram plugin for Wordpress!
 
 Do you want receive notification from your wordpress in your telegram? or get a notification for new orders from Woocommerce? This plugin is for you.
 
@@ -19,8 +21,11 @@ This plugin use [Telefication](https://telefication.ir) service to send notifica
 
 Feature List:
 
-*   Send notification to user or group.
-*   Send only Woocommerce detailed new order notification
+*   Send notification to Telegram user or group.
+*   Send email subject as a Telegram notification.
+*   Send email body as a Telegram notification.
+*   Display recipient email address in notifications.
+*   Send only Woocommerce detailed new order notification to Telegram.
 
 == Installation ==
 
@@ -46,7 +51,7 @@ You get notifications through @teleficationbot which is a Telegram bot.
 
 = Is there a limit to the number of notifications? =
 
-Currently its 15 Notifications per 24 hours. if you need more, please let us know.
+Currently its 30 Notifications per 24 hours. if you need more, please let us know.
 
 == Screenshots ==
 
@@ -55,9 +60,13 @@ Currently its 15 Notifications per 24 hours. if you need more, please let us kno
 
 == Changelog ==
 
+= 1.2.0 =
+* [Add] option to send email body.
+* [Add] option to display recipient email.
+
 = 1.1.0 =
-* Add, Send test message button.
-* Add, Emails field to filter notifications by recipients email. (for example notify me of emails those send to admin's email.)
+* [Add] Send test message button.
+* [Add] Emails field to filter notifications by recipients email.
 
 = 1.0.0 =
 * The first release.

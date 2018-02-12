@@ -187,8 +187,17 @@ class Telefication {
 			}
 		}
 
-		$message = get_bloginfo( 'name' ) . ":\n\n";
+		// check for adding recipient email
+		$to = ( isset( $this->options['display_recipient_email'] ) && '1' == $this->options['display_recipient_email'] ) ? $email_args['to'] : '';
+
+		$message = get_bloginfo( 'name' ) . ": " . $to . "\n\n";
 		$message .= $email_args['subject'] . "\n\n";
+
+		// check for adding email body option
+		if ( isset( $this->options['send_email_body'] ) && '1' == $this->options['send_email_body'] ) {
+			$message .= $email_args['message'] . "\n\n";
+		}
+
 		$message .= site_url();
 
 		$telefication_service = new Telefication_Service( $this->options );

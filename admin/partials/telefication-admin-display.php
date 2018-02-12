@@ -26,10 +26,15 @@
 
         </form>
     </div>
-    <p>
+    <p class="telefication-footer-note">
+        <span class="dashicons dashicons-star-filled"></span>
 		<?php
 		printf( __( 'If you like Telefication please leave us a %s rating. A huge thank you from us in advance!', 'telefication' ),
 			'<a href="https://wordpress.org/support/plugin/telefication/reviews/#new-post" target="_blank">★★★★★</a>' );
 		?>
+
+        <br>
+        <span class="dashicons dashicons-lightbulb"></span>
+        <?php _e( 'We will be happy if you let us know your suggestions.', 'telefication' ); ?>
     </p>
 </div>
