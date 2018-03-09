@@ -17,6 +17,7 @@ Get a notification on Telegram by Telefication bot. If you want, You can get not
 Do you want receive notification from your wordpress in your telegram? or get a notification for new orders from Woocommerce? This plugin is for you.
 
 Telefication send Wordpress email as a notification to your Telegram through a bot.
+
 This plugin use [Telefication](https://telefication.ir) service to send notifications to Telegram. Since version 1.3.0 you can use your own Telegram bot to get notifications directly.
 
 Feature List:
@@ -53,7 +54,7 @@ Since version 1.3.0 you can use your own bot to get notifications.
 
 = Is there a limit to the number of notifications? =
 
-Currently its 30 Notifications per 24 hours. if you need more, please let us know.
+Currently its 50 Notifications per 24 hours. if you need more, please let us know.
 
 == Screenshots ==
 
