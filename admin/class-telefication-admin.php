@@ -96,7 +96,8 @@ class Telefication_Admin {
 			// Localize the script with new data
 			$translation_array = array(
 				'error_occurred' => __( 'An error occurred', 'telefication' ),
-				'test_message'   => __( 'This is a test message from Telefication', 'telefication' )
+				'test_message'   => __( 'This is a test message from Telefication', 'telefication' ),
+				'ajax_url'       => admin_url( 'admin-ajax.php' )
 			);
 			wp_localize_script( 'telefication-admin-js', 'telefication', $translation_array );
 
@@ -207,6 +208,24 @@ class Telefication_Admin {
 			'general_setting_section'
 		);
 
+
+		// TELEFICATION OWN BOT SETTINGS
+
+		add_settings_section(
+			'own_bot_setting_section',
+			__( 'My Own Bot Setting', 'telefication' ),
+			array( $this, 'own_bot_setting_section_callback' ),
+			'telefication-own-bot-setting'
+		);
+
+		add_settings_field(
+			'bot_token', // ID
+			__( 'Your Bot Token', 'telefication' ),
+			array( $this, 'bot_token_callback' ),
+			'telefication-own-bot-setting',
+			'own_bot_setting_section'
+		);
+
 	}
 
 	/**
@@ -236,6 +255,10 @@ class Telefication_Admin {
 				}
 			}
 			$input['match_emails'] = implode( ',', $new_emails );
+		}
+
+		if ( isset( $input['bot_token'] ) ) {
+			$input['bot_token'] = sanitize_text_field( $input['bot_token'] );
 		}
 
 		return $input;
@@ -348,5 +371,34 @@ class Telefication_Admin {
 		);
 
 	}
+
+	// Own Bot Setting Page
+
+	/**
+	 * Own bot setting Section callback to print information.
+	 *
+	 * @since 1.3.0
+	 */
+	public function own_bot_setting_section_callback() {
+
+		echo "<p>If you insert your own bot token, Telefication will send notifications to your bot directly!<br>";
+	}
+
+	/**
+	 * Generate bot_token field display
+	 *
+	 * @since 1.3.0
+	 */
+	public function bot_token_callback() {
+
+		printf(
+			'<input type="text" id="bot_token" name="telefication[bot_token]" value="%s" /> ' .
+			'<p class="description">' . __( 'Please enter your bot token .', 'telefication' ) . '</p>',
+
+			isset( $this->options['bot_token'] ) ? esc_attr( $this->options['bot_token'] ) : ''
+		);
+
+	}
+
 
 }

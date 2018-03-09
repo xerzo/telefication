@@ -264,7 +264,6 @@ class Telefication {
 		}
 	}
 
-
 	/**
 	 * Register all of the hooks related to the admin area functionality of the plugin.
 	 *
@@ -281,8 +280,34 @@ class Telefication {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_telefication_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'init_telefication_page' );
 
+		// Since 1.3.0
+		$this->loader->add_action( 'wp_ajax_send_test_message', $this, 'send_test_message' );
+
 		// add link of Telefication setting page in plugins page
 		$this->loader->add_filter( 'plugin_action_links_' . TELEFICATION_BASENAME, $plugin_admin, 'add_action_links' );
+	}
+
+	/**
+	 * Ajax sent test message
+	 *
+	 * @since    1.3.0
+	 */
+	public function send_test_message() {
+
+		$message = ( isset( $_REQUEST['message'] ) ) ? $_REQUEST['message'] : __( 'This Is Test', 'telefication' );
+
+		if ( ! isset( $_REQUEST['chat_id'] ) || empty( $_REQUEST['chat_id'] ) ) {
+			_e( 'Please enter ID', 'telefication' );
+			die;
+		}
+
+		$telefication_service          = new Telefication_Service( $this->options );
+		$telefication_service->chat_id = $_REQUEST['chat_id'];
+
+		if ( $telefication_service->create_url( $message ) ) {
+			echo $telefication_service->send_notification();
+		}
+		die;
 	}
 
 	/**

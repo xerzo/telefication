@@ -10,19 +10,66 @@
  * @package    Telefication
  * @subpackage Telefication/admin/partials
  */
+
+$active_tab     = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general_options';
+$general_option = '';
+$own_bot_option = '';
+
+if ( $active_tab == 'own_bot_options' ) {
+	$general_option = "hide";
+} else {
+	$own_bot_option = "hide";
+}
+
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-<div class="wrap">
+<div class="wrap" id="telefication">
     <h1><?php _e( 'Telefication Setting', 'telefication' ); ?> </h1>
+
+    <h2 class="nav-tab-wrapper">
+        <a href="?page=telefication-setting&tab=general_options" class="nav-tab <?php echo $active_tab == 'general_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'General Setting', 'telefication' ); ?></a>
+        <a href="?page=telefication-setting&tab=own_bot_options" class="nav-tab <?php echo $active_tab == 'own_bot_options' ? 'nav-tab-active' : ''; ?>">🤖 <?php _e( 'My Own Bot', 'telefication' ); ?></a>
+    </h2>
     <div class="telefication-wrapper">
+
         <form method="post" action="options.php">
 
-			<?php
-			settings_fields( 'telefication_option_group' );
-			do_settings_sections( 'telefication-setting' );
-			submit_button();
-			?>
+			<?php settings_fields( 'telefication_option_group' ); ?>
+
+            <div class="<?php echo $general_option ?>">
+				<?php do_settings_sections( 'telefication-setting' ); ?>
+            </div>
+
+            <div class="<?php echo $own_bot_option ?>">
+				<?php do_settings_sections( 'telefication-own-bot-setting' ); ?>
+
+                <h2><span class='dashicons dashicons-editor-help'></span> "<?php _e( 'How To Use My Own Bot', 'telefication' ) ?></h2>
+                <p>
+					<?php
+
+					printf( __( '1. Go to %s and start it, send <code>/newbot</code> and follow instructions to create your own bot. at the end, you will receive your bot token. See %s for more information.', 'telefication' ),
+						'<a href="https://t.me/botfather" target="_blank">@botfather</a>',
+						'<a href="https://core.telegram.org/bots#6-botfather" target="_blank">' . __( 'here', 'telefication' ) . '</a>'
+					);
+					?>
+                    <br>
+
+					<?php _e( '2. Insert your bot token at input above and save changes. ', 'telefication' ); ?>
+                    <br>
+					<?php _e( '3. Go to the general options tab and test your bot by sending a test message ', 'telefication' ); ?>
+                    <br>
+                    <br>
+
+					<?php _e( "* Don't forget to start your own bot", 'telefication' ); ?>
+                    <br>
+					<?php printf( __( "** Currently, you should get your ID from %s and save it in general options tab like before, but notifications send to your but directly.", 'telefication' ),
+						'<a href="https://t.me/teleficationbot" target="_blank">@teleficationbot</a>' );
+					?>
+                </p>
+            </div>
+
+			<?php submit_button(); ?>
 
         </form>
     </div>
@@ -35,6 +82,6 @@
 
         <br>
         <span class="dashicons dashicons-lightbulb"></span>
-        <?php _e( 'We will be happy if you let us know your suggestions.', 'telefication' ); ?>
+		<?php _e( 'We will be happy if you let us know your suggestions.', 'telefication' ); ?>
     </p>
 </div>

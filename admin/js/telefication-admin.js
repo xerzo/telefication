@@ -8,8 +8,8 @@
         var chat_id = $('#chat_id').val();
 
         $.ajax({
-            url: 'https://telefication.ir/api/sendNotification',
-            data: {chat_id: chat_id, message: telefication.test_message},
+            url: telefication.ajax_url,
+            data: {action: 'telefication_test_message', chat_id: chat_id, message: telefication.test_message},
             dataType: 'text',
             success: function (data) {
                 alert(data);
