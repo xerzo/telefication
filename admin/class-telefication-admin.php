@@ -381,7 +381,7 @@ class Telefication_Admin {
 	 */
 	public function own_bot_setting_section_callback() {
 
-		echo "<p>If you insert your own bot token, Telefication will send notifications to your bot directly!<br>";
+		echo "<p>" . __( 'If you insert your own bot token, Telefication will send notifications to your bot directly!', 'telefication' ) . "<br>";
 	}
 
 	/**
