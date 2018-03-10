@@ -4,7 +4,7 @@ Tags: telegram, wordpress, notification, woocommerce, email, order
 Requires at least: 3.1.0
 Tested up to: 4.9.4
 Requires PHP: 5.6
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,9 +43,16 @@ Feature List:
 
 1. Upload the entire `Telefication` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
+
+###If you want use your own bot:
+3. Go to Telefication setting under Settings menu and go to "My Own Bot" tab.
+4. Follow instructions there to create your own bot and insert your bot token then save changes .
+5. Go to "General Setting" tab and press "Get your ID" button then save changes.
+
+###If you want use Telefication service:
 3. Join [@teleficationbot](https://t.me/teleficationbot) and get id. (If you want more than one user get notified, you can add @teleficationbot to groups.)
 4. Go to Telefication setting under Settings menu
-5. Insert your id in Telefication ID field and save settings.
+5. Insert your id in Telefication ID field and save changes.
 
 = How do I get notifications? =
 
@@ -54,7 +61,7 @@ Since version 1.3.0 you can use your own bot to get notifications.
 
 = Is there a limit to the number of notifications? =
 
-Currently its 50 Notifications per 24 hours. if you need more, please let us know.
+Unlimited, If you use your own bot and, 50 Notifications per 24 hours, If you use Telefication service.
 
 == Screenshots ==
 
@@ -63,6 +70,9 @@ Currently its 50 Notifications per 24 hours. if you need more, please let us kno
 3. Telegram messages.
 
 == Changelog ==
+= 1.4.0 =
+* [Add] Get your chat ID from Telefication setting page when you use your own bot.
+
 = 1.3.0 =
 * [Add] A new feature to use your own Telegram bot
 
