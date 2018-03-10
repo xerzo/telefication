@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Telefication\n"
 "POT-Creation-Date: 2018-03-09 22:54+0330\n"
-"PO-Revision-Date: 2018-03-09 22:56+0330\n"
+"PO-Revision-Date: 2018-03-10 00:02+0330\n"
 "Last-Translator: \n"
 "Language-Team: Telefication\n"
 "Language: fa_IR\n"
@@ -64,7 +64,7 @@ msgstr "فقط برای سفارشات ووکامرس"
 
 #: admin/class-telefication-admin.php:216
 msgid "My Own Bot Setting"
-msgstr "ربات خودم"
+msgstr "تنظیمات ربات خودم"
 
 #: admin/class-telefication-admin.php:223
 msgid "Your Bot Token"

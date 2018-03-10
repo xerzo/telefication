@@ -62,10 +62,6 @@ if ( $active_tab == 'own_bot_options' ) {
                     <br>
 
 					<?php _e( "* Don't forget to start your own bot", 'telefication' ); ?>
-                    <br>
-					<?php printf( __( "** Currently, you should get your ID from %s and save it in general options tab like before, but notifications send to your but directly.", 'telefication' ),
-						'<a href="https://t.me/teleficationbot" target="_blank">@teleficationbot</a>' );
-					?>
                 </p>
             </div>
 

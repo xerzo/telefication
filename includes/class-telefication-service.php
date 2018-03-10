@@ -56,7 +56,7 @@ class Telefication_Service {
 	 * @access   protected
 	 * @var bool
 	 */
-	protected $telegram_bot_token;
+	public $telegram_bot_token;
 
 	/**
 	 * Initialize options.
@@ -75,6 +75,43 @@ class Telefication_Service {
 		} else {
 			$this->telegram_bot_token = false;
 		}
+	}
+
+	/**
+	 * Get chat id from user custom bot
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return bool
+	 */
+	function get_chat_id() {
+
+		$this->url  = 'https://api.telegram.org/bot' . $this->telegram_bot_token . '/getUpdates';
+		$this->data = array(
+			'offset' => '-1',
+		);
+
+		$ch           = curl_init();
+		$option_array = array(
+			CURLOPT_URL            => $this->url . '?' . http_build_query( $this->data ),
+			CURLOPT_RETURNTRANSFER => true,
+		);
+		curl_setopt_array( $ch, $option_array );
+		$result = curl_exec( $ch );
+		curl_close( $ch );
+
+		$result = json_decode( $result, true );
+		if ( 'true' == $result['ok'] ) {
+			return $result['result'][0]['message']['from']['id'];
+		} else {
+
+			if ( isset( $result['description'] ) ) {
+				return $result['description'];
+			}
+
+			return false;
+		}
+
 	}
 
 	/**

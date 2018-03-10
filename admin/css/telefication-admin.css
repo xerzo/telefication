@@ -34,6 +34,15 @@
 	display : none;
 }
 
+.disable {
+	opacity         : .5;
+	color           : currentColor;
+	display         : inline-block; /* For IE11/ MS Edge bug */
+	pointer-events  : none;
+	text-decoration : none;
+	cursor          : not-allowed;
+}
+
 .telefication-wrapper #chat_id {
 	direction : ltr;
 }

@@ -87,8 +87,16 @@ function run_telefication() {
 
 run_telefication();
 
-// Since 1.3.0
-// Ajax test message
-if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'telefication_test_message' ) {
-	do_action( 'wp_ajax_send_test_message' );
+// Ajax Messages
+if ( isset( $_REQUEST['action'] ) ) {
+
+	// Since 1.3.0
+	if ( $_REQUEST['action'] == 'telefication_test_message' ) {
+		do_action( 'wp_ajax_send_test_message' );
+	}
+
+	// Since 1.4.0
+	if ( $_REQUEST['action'] == 'telefication_get_chat_id' ) {
+		do_action( 'wp_ajax_get_chat_id' );
+	}
 }

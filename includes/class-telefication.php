@@ -282,6 +282,7 @@ class Telefication {
 
 		// Since 1.3.0
 		$this->loader->add_action( 'wp_ajax_send_test_message', $this, 'send_test_message' );
+		$this->loader->add_action( 'wp_ajax_get_chat_id', $this, 'get_chat_id' );
 
 		// add link of Telefication setting page in plugins page
 		$this->loader->add_filter( 'plugin_action_links_' . TELEFICATION_BASENAME, $plugin_admin, 'add_action_links' );
@@ -307,6 +308,25 @@ class Telefication {
 		if ( $telefication_service->create_url( $message ) ) {
 			echo $telefication_service->send_notification();
 		}
+		die;
+	}
+
+	/**
+	 * Ajax get chat id
+	 *
+	 * @since    1.4.0
+	 */
+	public function get_chat_id() {
+
+		if ( ! isset( $_REQUEST['bot_token'] ) || empty( $_REQUEST['bot_token'] ) ) {
+			_e( 'Please enter bot token', 'telefication' );
+			die;
+		}
+
+		$telefication_service                     = new Telefication_Service( $this->options );
+		$telefication_service->telegram_bot_token = $_REQUEST['bot_token'];
+
+		echo $telefication_service->get_chat_id();
 		die;
 	}
 

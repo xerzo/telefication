@@ -95,9 +95,10 @@ class Telefication_Admin {
 
 			// Localize the script with new data
 			$translation_array = array(
-				'error_occurred' => __( 'An error occurred', 'telefication' ),
-				'test_message'   => __( 'This is a test message from Telefication', 'telefication' ),
-				'ajax_url'       => admin_url( 'admin-ajax.php' )
+				'error_occurred'     => __( 'An error occurred', 'telefication' ),
+				'test_message'       => __( 'This is a test message from Telefication', 'telefication' ),
+				'ajax_url'           => admin_url( 'admin-ajax.php' ),
+				'bot_token_is_empty' => __( 'Your bot token is not set!', 'telefication' )
 			);
 			wp_localize_script( 'telefication-admin-js', 'telefication', $translation_array );
 
@@ -271,7 +272,7 @@ class Telefication_Admin {
 	 */
 	public function general_setting_section_callback() {
 
-		printf( '<p>' . __( 'Join to %s at Telegram to receive notifications.', 'telefication' ) . '</p>',
+		printf( '<p>' . __( 'By default you should join to %s at Telegram to receive notifications. But you can use your own Telegram Bot.', 'telefication' ) . '</p>',
 			'<a href="https://t.me/teleficationbot" target="_blank">@teleficationbot</a>' );
 
 	}
@@ -286,11 +287,24 @@ class Telefication_Admin {
 		printf(
 			'<input type="text" id="chat_id" name="telefication[chat_id]" value="%s" /> ' .
 			'<a href="#" id="test_message" class="button">' . __( 'Send test message', 'telefication' ) . '</a>' .
-			'<p class="description">' . __( 'Please enter your Telefication bot id.', 'telefication' ) . '</p>',
+			'<p class="description">' . __( 'Please enter your Telefication bot id. You should get it from @teleficationbot', 'telefication' ) . '</p>',
 
 			isset( $this->options['chat_id'] ) ? esc_attr( $this->options['chat_id'] ) : ''
 		);
 
+		$description = __( 'If you use your own bot, you cat get your id by pressing this button. ', 'telefication' );
+		$disable     = 'disable';
+
+		if ( isset( $this->options['bot_token'] ) && ! empty( $this->options['bot_token'] ) ) {
+
+			$disable     = '';
+			$description = __( 'Start your bot or send a message to it, then press this button to get your ID', 'telefication' );
+		}
+
+		echo "<div class='$disable'>";
+		echo '<br><a href="#" id="get_chat_id" class="button">' . __( 'Get Your ID From Your Own Bot', 'telefication' ) . '</a>';
+		echo '<p class="description">' . $description . '</p>';
+		echo '</div>';
 	}
 
 	/**
