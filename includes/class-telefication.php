@@ -154,15 +154,109 @@ class Telefication {
 	 */
 	private function core_functionality() {
 
+		// Notify for email - Filter
+		if ( isset( $this->options['email_notification'] ) && '1' == $this->options['email_notification'] ) {
+			$this->loader->add_filter( 'wp_mail', $this, 'telefication_filter_wp_mail' );
+		}
+
+		// New order action
 		if ( isset( $this->options['is_woocommerce_only'] ) && '1' == $this->options['is_woocommerce_only'] ) {
 			// if woocommerce is active
 			$this->loader->add_action( 'woocommerce_thankyou', $this, 'telefication_action_woocommerce_thankyou' );
+		}
 
-		} else {
-			$this->loader->add_filter( 'wp_mail', $this, 'telefication_filter_wp_mail' );
+		// New comment action
+		if ( isset( $this->options['new_comment_notification'] ) && '1' == $this->options['new_comment_notification'] ) {
+			// if woocommerce is active
+			$this->loader->add_action( 'wp_insert_comment', $this, 'telefication_action_wp_insert_comment' );
+		}
 
+		// New post action
+		if ( isset( $this->options['new_post_notification'] ) && '1' == $this->options['new_post_notification'] ) {
+			// if woocommerce is active
+			$this->loader->add_action( 'transition_post_status', $this, 'telefication_action_publish_post', 10, 3 );
+		}
+
+		// New user action
+		if ( isset( $this->options['new_user_notification'] ) && '1' == $this->options['new_user_notification'] ) {
+			// if woocommerce is active
+			$this->loader->add_action( 'user_register', $this, 'telefication_action_user_register', 10 );
 		}
 	}
+
+	/**
+	 * New User Registration Action
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param $user_id
+	 */
+	public function telefication_action_user_register( $user_id ) {
+
+		//notification body
+		$message = get_bloginfo( 'name' ) . ":\n\n";
+		$message .= __( 'New User Registered.', 'telefication' ) . "\n\n";
+
+		$message .= site_url();
+
+		$telefication_service = new Telefication_Service( $this->options );
+
+		if ( $telefication_service->create_url( $message ) ) {
+			$telefication_service->send_notification();
+		}
+	}
+
+	/**
+	 * New Post Publish Action
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param $new_status
+	 * @param $old_status
+	 * @param $post
+	 */
+	public function telefication_action_publish_post( $new_status, $old_status, $post ) {
+		if ( 'publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post' ) {
+
+			//notification body
+			$message = get_bloginfo( 'name' ) . ":\n\n";
+			$message .= __( 'New Post: ', 'telefication' ) . "\n-----\n\n";
+			$message .= $post->post_title . "\n\n";
+
+			$message .= site_url();
+
+			$telefication_service = new Telefication_Service( $this->options );
+
+			if ( $telefication_service->create_url( $message ) ) {
+				$telefication_service->send_notification();
+			}
+		}
+	}
+
+	/**
+	 * New Comment Action
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param $comment_ID
+	 */
+	public function telefication_action_wp_insert_comment( $comment_ID ) {
+		$comment_text = get_comment_text( $comment_ID );
+
+		//notification body
+		$message = get_bloginfo( 'name' ) . ":\n\n";
+		$message .= __( 'New Comment: ', 'telefication' ) . "\n-----\n\n";
+		$message .= $comment_text . "\n\n";
+
+		$message .= site_url();
+
+		$telefication_service = new Telefication_Service( $this->options );
+
+		if ( $telefication_service->create_url( $message ) ) {
+			$telefication_service->send_notification();
+		}
+	}
+
 
 	/**
 	 * Add filter callback function for 'wp_email'

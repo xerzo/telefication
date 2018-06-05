@@ -54,8 +54,8 @@ class Telefication_Admin {
 	 * @since    1.0.0
 	 *
 	 * @param      string $plugin_name The name of this plugin.
-	 * @param      string $version     The version of this plugin.
-	 * @param array       $options     Telefication options from WP database
+	 * @param      string $version The version of this plugin.
+	 * @param array $options Telefication options from WP database
 	 */
 	public function __construct( $plugin_name, $version, $options ) {
 
@@ -171,47 +171,22 @@ class Telefication_Admin {
 
 		add_settings_field(
 			'chat_id', // ID
-			__( 'Telefication Bot ID', 'telefication' ),
+			__( 'Telefication Chat ID', 'telefication' ),
 			array( $this, 'chat_id_callback' ),
 			'telefication-setting',
 			'general_setting_section'
 		);
 
 		add_settings_field(
-			'match_emails',
-			__( 'Email(s):', 'telefication' ),
-			array( $this, 'match_emails_callback' ),
-			'telefication-setting',
-			'general_setting_section'
-		);
-
-		add_settings_field(
-			'display_recipient_email',
-			__( 'Display Recipient Email', 'telefication' ),
-			array( $this, 'display_recipient_email_callback' ),
-			'telefication-setting',
-			'general_setting_section'
-		);
-
-		add_settings_field(
-			'send_email_body',
-			__( 'Send Email Body', 'telefication' ),
-			array( $this, 'send_email_body_callback' ),
-			'telefication-setting',
-			'general_setting_section'
-		);
-
-		add_settings_field(
-			'is_woocommerce_only',
-			__( 'Only Woocommerce Orders', 'telefication' ),
-			array( $this, 'woocommerce_only_callback' ),
+			'notify_for',
+			__( 'Notify Me For:', 'telefication' ),
+			array( $this, 'notify_for_callback' ),
 			'telefication-setting',
 			'general_setting_section'
 		);
 
 
 		// TELEFICATION OWN BOT SETTINGS
-
 		add_settings_section(
 			'own_bot_setting_section',
 			__( 'My Own Bot Setting', 'telefication' ),
@@ -272,7 +247,8 @@ class Telefication_Admin {
 	 */
 	public function general_setting_section_callback() {
 
-		printf( '<p>' . __( 'By default you should join to %s at Telegram to receive notifications. But you can use your own Telegram Bot.', 'telefication' ) . '</p>',
+		printf( '<p>' . __( 'You can use <a href="%s">your own Telegram Bot</a> or join to %s at Telegram to receive notifications.', 'telefication' ) . '</p>',
+			'?page=telefication-setting&tab=own_bot_options',
 			'<a href="https://t.me/teleficationbot" target="_blank">@teleficationbot</a>' );
 
 	}
@@ -287,12 +263,12 @@ class Telefication_Admin {
 		printf(
 			'<input type="text" id="chat_id" name="telefication[chat_id]" value="%s" /> ' .
 			'<a href="#" id="test_message" class="button">' . __( 'Send test message', 'telefication' ) . '</a>' .
-			'<p class="description">' . __( 'Please enter your Telefication bot id. You should get it from @teleficationbot', 'telefication' ) . '</p>',
+			'<p class="description">' . __( 'Please enter your Telegram chat id. You can get it from @teleficationbot', 'telefication' ) . '</p>',
 
 			isset( $this->options['chat_id'] ) ? esc_attr( $this->options['chat_id'] ) : ''
 		);
 
-		$description = __( 'If you use your own bot, you cat get your id by pressing this button. ', 'telefication' );
+		$description = __( 'If you use your own bot, you cat get your chat id by pressing this button. ', 'telefication' );
 		$disable     = 'disable';
 
 		if ( isset( $this->options['bot_token'] ) && ! empty( $this->options['bot_token'] ) ) {
@@ -302,89 +278,111 @@ class Telefication_Admin {
 		}
 
 		echo "<div class='$disable'>";
-		echo '<br><a href="#" id="get_chat_id" class="button">' . __( 'Get Your ID From Your Own Bot', 'telefication' ) . '</a>';
+		echo '<br><a href="#" id="get_chat_id" class="button">' . __( 'Get Your Chat ID From Your Own Bot', 'telefication' ) . '</a>';
 		echo '<p class="description">' . $description . '</p>';
 		echo '</div>';
 	}
 
-	/**
-	 * Generate woocommerce checkbox field display
-	 *
-	 * @since 1.0.0
-	 */
-	public function woocommerce_only_callback() {
-
-		if ( isset( $this->options['is_woocommerce_only'] ) ) {
-			$checked = checked( 1, $this->options['is_woocommerce_only'], false );
-		}
-
-		if ( ! defined( 'WC_VERSION' ) ) {
-			$woocommerce_is_active = '<p>' . __( '⚠ Woocommerce is not active!', 'telefication' ) . '</p>';
-		}
-
-		printf(
-			'<input type="checkbox" id="is_woocommerce_only" name="telefication[is_woocommerce_only]" value="1" %s/>' .
-			'<label for="is_woocommerce_only">' . __( 'If enabled, you will receive only woocommerce new orders notification. (on woocommerce thank you page)', 'telefication' ) . '</label>' .
-			'%s',
-			isset( $checked ) ? $checked : '',
-			isset( $woocommerce_is_active ) ? $woocommerce_is_active : ''
-		);
-
-	}
 
 	/**
 	 * Generate send email body option checkbox field
 	 *
 	 * @since 1.2.0
 	 */
-	public function send_email_body_callback() {
+	public function notify_for_callback() {
 
-		if ( isset( $this->options['send_email_body'] ) ) {
-			$checked = checked( 1, $this->options['send_email_body'], false );
+
+		if ( isset( $this->options['email_notification'] ) ) {
+			$email_notification_checked = checked( 1, $this->options['email_notification'], false );
 		}
-
+		if ( isset( $this->options['send_email_body'] ) ) {
+			$send_email_body_checked = checked( 1, $this->options['send_email_body'], false );
+		}
+		if ( isset( $this->options['display_recipient_email'] ) ) {
+			$display_recipient_email_checked = checked( 1, $this->options['display_recipient_email'], false );
+		}
+		if ( isset( $this->options['is_woocommerce_only'] ) ) {
+			$is_woocommerce_only_checked = checked( 1, $this->options['is_woocommerce_only'], false );
+		}
+		if ( isset( $this->options['new_comment_notification'] ) ) {
+			$new_comment_notification_checked = checked( 1, $this->options['new_comment_notification'], false );
+		}
+		if ( isset( $this->options['new_post_notification'] ) ) {
+			$new_post_notification_checked = checked( 1, $this->options['new_post_notification'], false );
+		}
+		if ( isset( $this->options['new_user_notification'] ) ) {
+			$new_user_notification_checked = checked( 1, $this->options['new_user_notification'], false );
+		}
+		/*
+		 * Notify for emails
+		 */
 		printf(
-			'<input type="checkbox" id="send_email_body" name="telefication[send_email_body]" value="1" %s/>' .
-			'<label for="send_email_body">' . __( 'If enabled, you will receive email body too.', 'telefication' ) . '</label>',
-			isset( $checked ) ? $checked : ''
+			'<div class="field-set"><input class="has-sub" type="checkbox" id="email_notification" name="telefication[email_notification]" value="1" %s/>' .
+			'<label for="email_notification"><b>' . __( 'E-mails:', 'telefication' ) . '</b> ' . __( 'notify me for WP emails', 'telefication' ) . '</label><br> ',
+			isset( $email_notification_checked ) ? $email_notification_checked : ''
 		);
 
-	}
+		//Send email body?
+		printf(
+			'<div style="display:%s;" class="setting-fields-group"><input type="checkbox" id="send_email_body" name="telefication[send_email_body]" value="1" %s/>' .
+			'<label for="send_email_body"><b>' . __( 'Send Email Body:', 'telefication' ) . '</b> ' . __( 'If enabled, you will receive email body too.', 'telefication' ) . '</label><br>',
+			isset( $email_notification_checked ) ? 'block' : 'none',
+			isset( $send_email_body_checked ) ? $send_email_body_checked : ''
+		);
 
-	/**
-	 * Generate display recipient email option checkbox field
-	 *
-	 * @since 1.2.0
-	 */
-	public function display_recipient_email_callback() {
-
-		if ( isset( $this->options['display_recipient_email'] ) ) {
-			$checked = checked( 1, $this->options['display_recipient_email'], false );
-		}
-
+		//add recipient email to notification?
 		printf(
 			'<input type="checkbox" id="display_recipient_email" name="telefication[display_recipient_email]" value="1" %s/>' .
-			'<label for="display_recipient_email">' . __( 'If enabled, the recipient email will be added to notifications.', 'telefication' ) . '</label>',
-			isset( $checked ) ? $checked : ''
+			'<label for="display_recipient_email"><b>' . __( 'Display Recipient Email:', 'telefication' ) . '</b> ' . __( 'If enabled, the recipient email will be added to notifications.', 'telefication' ) . '</label><br>',
+			isset( $display_recipient_email_checked ) ? $display_recipient_email_checked : ''
 		);
 
-	}
-
-	/**
-	 * Generate emails field display
-	 *
-	 * @since 1.1.0
-	 */
-	public function match_emails_callback() {
-
+		//Filter recipients
 		printf(
-			'<input type="text" id="match_emails" name="telefication[match_emails]" value="%s" /> ' .
-			'<p class="description">' . __( 'Notify me only of the emails that are sent to this list. (Comma separated.) <br> Leave it empty if you want to get all notifications.', 'telefication' ) . '</p>',
+			'<br><b>' . __( 'Email(s):', 'telefication' ) . '</b><br><input type="text" id="match_emails" name="telefication[match_emails]" value="%s" /> ' .
+			'<p class="description">' . __( 'Notify me only of the emails that are sent to this list. (Comma separated.) <br> Leave it empty if you want to get all notifications.', 'telefication' ) . '</p></div></div>',
 
 			isset( $this->options['match_emails'] ) ? esc_attr( $this->options['match_emails'] ) : ''
 		);
+		// END Of Field Set
+
+
+		// is woocommerce active
+		if ( ! defined( 'WC_VERSION' ) ) {
+			$woocommerce_is_active = '<p>' . __( '⚠ Woocommerce is not active!', 'telefication' ) . '</p>';
+		}
+		//Notify for new orders
+		printf(
+			'<input class="%s" type="checkbox" id="is_woocommerce_only" name="telefication[is_woocommerce_only]" value="1" %s/>' .
+			'<label class="%s" for="is_woocommerce_only">' . __( '<b>New Order:</b> Enable this to get notified for new woocommerce orders. (on woocommerce thank you page)', 'telefication' ) . '</label><br>',
+			isset( $woocommerce_is_active ) ? 'disable' : '',
+			isset( $is_woocommerce_only_checked ) ? $is_woocommerce_only_checked : '',
+			isset( $woocommerce_is_active ) ? 'disable' : ''
+		);
+
+		// Notify for new comments
+		printf(
+			'<input type="checkbox" id="new_comment_notification" name="telefication[new_comment_notification]" value="1" %s/>' .
+			'<label for="new_comment_notification"><b>' . __( 'New Comment:', 'telefication' ) . '</b> ' . __( 'Enable this to get notified for new comments', 'telefication' ) . '</label><br> ',
+			isset( $new_comment_notification_checked ) ? $new_comment_notification_checked : ''
+		);
+
+		// Notify for new posts
+		printf(
+			'<input type="checkbox" id="new_post_notification" name="telefication[new_post_notification]" value="1" %s/>' .
+			'<label for="new_post_notification"><b>' . __( 'New Post:', 'telefication' ) . '</b> ' . __( 'Enable this to get notified for new post', 'telefication' ) . '</label><br> ',
+			isset( $new_post_notification_checked ) ? $new_post_notification_checked : ''
+		);
+
+		// Notify for new posts
+		printf(
+			'<input type="checkbox" id="new_user_notification" name="telefication[new_user_notification]" value="1" %s/>' .
+			'<label for="new_user_notification"><b>' . __( 'New User:', 'telefication' ) . '</b> ' . __( 'Enable this to get notified for new user registration', 'telefication' ) . '</label><br> ',
+			isset( $new_user_notification_checked ) ? $new_user_notification_checked : ''
+		);
 
 	}
+
 
 	// Own Bot Setting Page
 

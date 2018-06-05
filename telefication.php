@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name:       Telefication
  * Plugin URI:        https://telefication.ir/wordpress-plugin
- * Description:       Send notifications to users via @teleficationbot (a telegram robot). you can start it here <a href="https://t.me/teleficationbot">Telefication Bot</a>
+ * Description:       Send notifications via Telegram to your own Bot or @teleficationbot (a telegram bot). you can start it here <a href="https://t.me/teleficationbot">Telefication Bot</a>
  * Version:           1.4.0
  * Author:            Foad Tahmasebi
  * Author URI:        http://daskhat.ir/
@@ -100,3 +100,48 @@ if ( isset( $_REQUEST['action'] ) ) {
 		do_action( 'wp_ajax_get_chat_id' );
 	}
 }
+
+
+/**
+ * This function runs when WordPress completes its upgrade process
+ * It iterates through each plugin updated to see if ours is included
+ *
+ * @since 1.4.0
+ *
+ * @param $upgrader_object Array
+ * @param $options Array
+ */
+function telefication_upgrade_completed( $upgrader_object, $options ) {
+	// The path to our plugin's main file
+	$our_plugin = TELEFICATION_BASENAME;
+
+	// If an update has taken place and the updated type is plugins and the plugins element exists
+	if ( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
+
+		// Iterate through the plugins being updated and check if ours is there
+		foreach ( $options['plugins'] as $plugin ) {
+			if ( $plugin == $our_plugin ) {
+				// Set a transient to record that our plugin has just been updated
+				set_transient( 'telefication_updated', 1 );
+			}
+		}
+	}
+}
+
+/**
+ * Display notice to review settings
+ *
+ * @since 1.4.0
+ */
+function telefication_display_update_notice() {
+	// Check the transient to see if we've just updated the plugin
+	if ( get_transient( 'telefication_updated' ) ) {
+		printf( '<div class="notice notice-success"><p>' . __( 'Thanks for updating <b>Telefication</b>. Please review the <a href="%s">Setting</a>.', 'telefication' ) . '</p></div>',
+			admin_url( 'options-general.php?page=telefication-setting' ) );
+		delete_transient( 'telefication_updated' );
+	}
+}
+
+
+add_action( 'upgrader_process_complete', 'telefication_upgrade_completed', 10, 2 );
+add_action( 'admin_notices', 'telefication_display_update_notice' );

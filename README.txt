@@ -4,11 +4,11 @@ Tags: telegram, wordpress, notification, woocommerce, email, order
 Requires at least: 3.1.0
 Tested up to: 4.9.4
 Requires PHP: 5.6
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Get a notification on Telegram by Telefication bot. If you want, You can get notified just for new Woocommerce orders.
+Get a notification on Telegram by your own bot or Telefication bot. Notification for emails, new Woocommerce orders, new comments, new posts and new users.
 
 == Description ==
 
@@ -16,18 +16,21 @@ Get a notification on Telegram by Telefication bot. If you want, You can get not
 
 Do you want receive notification from your wordpress in your telegram? or get a notification for new orders from Woocommerce? This plugin is for you.
 
-Telefication send Wordpress email as a notification to your Telegram through a bot.
+Telefication send Wordpress emails and events as a notification to your Telegram through your own bot.
 
 This plugin use [Telefication](https://telefication.ir) service to send notifications to Telegram. Since version 1.3.0 you can use your own Telegram bot to get notifications directly.
 
 Feature List:
 
+*   Use can use your own Telegram bot to get notifications directly.
 *   Send notification to Telegram user or group.
 *   Send email subject as a Telegram notification.
 *   Send email body as a Telegram notification.
 *   Display recipient email address in notifications.
-*   Send only Woocommerce detailed new order notification to Telegram.
-*   Use your own Telegram bot to get notifications directly.
+*   Send Woocommerce detailed new order notification to Telegram.
+*   Notify for new comments
+*   Notify for new Posts
+*   Notify for new users
 
 == Installation ==
 
@@ -72,6 +75,10 @@ Unlimited, If you use your own bot and, 50 Notifications per 24 hours, If you us
 == Changelog ==
 = 1.4.0 =
 * [Add] Get your chat ID from Telefication setting page when you use your own bot.
+* [Add] Notify for new comments
+* [Add] Notify for new posts
+* [Add] Notify for new users
+* [Add] Now, you have an option to cancel notifications for emails.
 
 = 1.3.0 =
 * [Add] A new feature to use your own Telegram bot

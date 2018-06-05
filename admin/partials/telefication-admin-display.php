@@ -44,7 +44,7 @@ if ( $active_tab == 'own_bot_options' ) {
             <div class="<?php echo $own_bot_option ?>">
 				<?php do_settings_sections( 'telefication-own-bot-setting' ); ?>
 
-                <h2><span class='dashicons dashicons-editor-help'></span> "<?php _e( 'How To Use My Own Bot', 'telefication' ) ?></h2>
+                <h2><span class='dashicons dashicons-editor-help'></span> <?php _e( 'How To Use My Own Bot', 'telefication' ) ?></h2>
                 <p>
 					<?php
 

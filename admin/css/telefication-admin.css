@@ -2,39 +2,43 @@
  * All of the CSS for telefication admin-specific functionality.
  */
 
-.nav-tab-wrapper {
+#telefication .nav-tab-wrapper {
 	border-bottom : 1px solid #e3e3e3 !important;
 }
 
-.nav-tab {
+#telefication .nav-tab {
 	border        : 1px solid #e3e3e3;
 	border-bottom : none;
 	border-radius : 3px 3px 0 0;
 }
 
-.nav-tab-active {
-	background-color : #FFF;
-	border-bottom    : 1px solid #fff;
+#telefication .nav-tab-active {
+	background-color : #ffffff;
+	border-bottom    : 1px solid #ffffff;
 }
 
-.nav-tab-active:hover {
-	background-color : #FFF;
-	border-bottom    : 1px solid #fff;
+#telefication .nav-tab-active:hover {
+	background-color : #ffffff;
+	border-bottom    : 1px solid #ffffff;
 }
 
-.telefication-wrapper {
-	background-color : #fff !important;
+#telefication .telefication-wrapper {
+	background-color : #ffffff !important;
 	border           : 1px solid #e3e3e3;
 	border-top       : none;
 	border-radius    : 0 0 3px 3px;
 	padding          : 20px;
 }
 
-.hide {
+#telefication .telefication-wrapper .form-table td {
+	font-size : 14px !important;
+}
+
+#telefication .hide {
 	display : none;
 }
 
-.disable {
+#telefication .disable {
 	opacity         : .5;
 	color           : currentColor;
 	display         : inline-block; /* For IE11/ MS Edge bug */
@@ -43,17 +47,56 @@
 	cursor          : not-allowed;
 }
 
-.telefication-wrapper #chat_id {
+#telefication .telefication-wrapper #chat_id {
 	direction : ltr;
 }
 
-.telefication-wrapper #match_emails, .telefication-wrapper #bot_token {
+#telefication .telefication-wrapper #match_emails, .telefication-wrapper #bot_token {
 	direction : ltr;
 	width     : 50%;
 }
 
-.telefication-footer-note .dashicons {
+#telefication .telefication-footer-note .dashicons {
 	font-size   : 16px;
 	padding-top : 3px;
 }
+
+#telefication .setting-fields-group {
+	border-left : 2px solid #1e8cbe;
+	padding     : 15px 10px 10px;
+	margin      : 0 0 10px 7px;
+}
+
+#telefication .animated {
+	-webkit-animation-duration  : 1s;
+	animation-duration          : 1s;
+	-webkit-animation-fill-mode : both;
+	animation-fill-mode         : both;
+}
+
+@-webkit-keyframes fadeIn {
+	from {
+		opacity : 0;
+	}
+
+	to {
+		opacity : 1;
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity : 0;
+	}
+
+	to {
+		opacity : 1;
+	}
+}
+
+#telefication .fadeIn {
+	-webkit-animation-name : fadeIn;
+	animation-name         : fadeIn;
+}
+
 
