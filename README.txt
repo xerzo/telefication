@@ -2,7 +2,7 @@
 Contributors: arshen
 Tags: telegram, wordpress, notification, woocommerce, email, order
 Requires at least: 3.1.0
-Tested up to: 4.9.4
+Tested up to: 4.9.6
 Requires PHP: 5.6
 Stable tag: 1.4.0
 License: GPLv2 or later
