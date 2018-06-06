@@ -12,6 +12,12 @@
 	border-radius : 3px 3px 0 0;
 }
 
+#telefication .nav-tab:focus, #telefication .nav-tab:active {
+	outline            : 0 !important;
+	box-shadow         : none;
+	-moz-outline-style : none;
+}
+
 #telefication .nav-tab-active {
 	background-color : #ffffff;
 	border-bottom    : 1px solid #ffffff;
@@ -45,6 +51,14 @@
 	pointer-events  : none;
 	text-decoration : none;
 	cursor          : not-allowed;
+}
+
+#telefication .half {
+	width : 50%;
+}
+#telefication .one-third {
+	width : 32%;
+	display: inline-block;
 }
 
 #telefication .telefication-wrapper #chat_id {
@@ -97,6 +111,11 @@
 #telefication .fadeIn {
 	-webkit-animation-name : fadeIn;
 	animation-name         : fadeIn;
+}
+
+#channel_notification_template {
+	width  : 50%;
+	height : 100px;
 }
 
 

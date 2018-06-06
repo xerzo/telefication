@@ -14,11 +14,18 @@
 $active_tab     = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general_options';
 $general_option = '';
 $own_bot_option = '';
+$channel_option = '';
 
 if ( $active_tab == 'own_bot_options' ) {
 	$general_option = "hide";
+	$channel_option = 'hide';
+
+} elseif ( $active_tab == 'channel_options' ) {
+	$own_bot_option = "hide";
+	$general_option = "hide";
 } else {
 	$own_bot_option = "hide";
+	$channel_option = 'hide';
 }
 
 ?>
@@ -28,8 +35,10 @@ if ( $active_tab == 'own_bot_options' ) {
     <h1><?php _e( 'Telefication Setting', 'telefication' ); ?> </h1>
 
     <h2 class="nav-tab-wrapper">
-        <a href="?page=telefication-setting&tab=general_options" class="nav-tab <?php echo $active_tab == 'general_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'General Setting', 'telefication' ); ?></a>
-        <a href="?page=telefication-setting&tab=own_bot_options" class="nav-tab <?php echo $active_tab == 'own_bot_options' ? 'nav-tab-active' : ''; ?>">🤖 <?php _e( 'My Own Bot', 'telefication' ); ?></a>
+        <a href="?page=telefication-setting&tab=general_options" data-tab="telefication-general-setting" class="nav-tab <?php echo $active_tab == 'general_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'General Setting', 'telefication' ); ?></a>
+        <a href="?page=telefication-setting&tab=own_bot_options" data-tab="telefication-own-bot-setting" class="nav-tab <?php echo $active_tab == 'own_bot_options' ? 'nav-tab-active' : ''; ?>">🤖 <?php _e( 'My Own Bot', 'telefication' ); ?></a>
+        <a href="?page=telefication-setting&tab=channel_options" data-tab="telefication-channel-setting" class="nav-tab <?php echo $active_tab == 'channel_options' ? 'nav-tab-active' : ''; ?>">📢 <?php _e( 'Send To Channel', 'telefication' ); ?></a>
+
     </h2>
     <div class="telefication-wrapper">
 
@@ -37,11 +46,11 @@ if ( $active_tab == 'own_bot_options' ) {
 
 			<?php settings_fields( 'telefication_option_group' ); ?>
 
-            <div class="<?php echo $general_option ?>">
+            <div class="tab-container <?php echo $general_option ?>" id="telefication-general-setting">
 				<?php do_settings_sections( 'telefication-setting' ); ?>
             </div>
 
-            <div class="<?php echo $own_bot_option ?>">
+            <div class="tab-container <?php echo $own_bot_option ?>" id="telefication-own-bot-setting">
 				<?php do_settings_sections( 'telefication-own-bot-setting' ); ?>
 
                 <h2><span class='dashicons dashicons-editor-help'></span> <?php _e( 'How To Use My Own Bot', 'telefication' ) ?></h2>
@@ -63,6 +72,10 @@ if ( $active_tab == 'own_bot_options' ) {
 
 					<?php _e( "* Don't forget to start your own bot", 'telefication' ); ?>
                 </p>
+            </div>
+
+            <div class="tab-container <?php echo $channel_option ?>" id="telefication-channel-setting">
+				<?php do_settings_sections( 'telefication-channel-setting' ); ?>
             </div>
 
 			<?php submit_button(); ?>

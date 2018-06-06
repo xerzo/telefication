@@ -60,5 +60,24 @@
             }
         });
 
+        $('.nav-tab').on('click', function (event) {
+            event.preventDefault();
+
+            var id = $(this).data("tab");
+            //var url = $(this).attr('href');
+
+            $('#telefication').find('.nav-tab').not(this).removeClass('nav-tab-active');
+            $(this).addClass('nav-tab-active');
+
+            $('.telefication-wrapper').find('.tab-container').not('#' + id).addClass('hide');
+            $('#' + id).removeClass('hide');
+
+            //var stateObj = {tab: id};
+            //window.history.pushState(stateObj, "Telefication Setting", url);
+
+            return false;
+        });
+
     }
 )(jQuery);
+

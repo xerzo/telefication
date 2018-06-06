@@ -202,6 +202,46 @@ class Telefication_Admin {
 			'own_bot_setting_section'
 		);
 
+		// TELEFICATION CHANNEL SETTINGS
+		add_settings_section(
+			'channel_setting_section',
+			__( 'Channel Setting', 'telefication' ),
+			array( $this, 'channel_setting_section_callback' ),
+			'telefication-channel-setting'
+		);
+
+		add_settings_field(
+			'channel_username', // ID
+			__( 'Your Channel Username', 'telefication' ),
+			array( $this, 'telefication_chanel_username_callback' ),
+			'telefication-channel-setting',
+			'channel_setting_section'
+		);
+
+
+		add_settings_field(
+			'channel_notification_template', // ID
+			__( 'Notification Template', 'telefication' ),
+			array( $this, 'telefication_channel_notification_template_callback' ),
+			'telefication-channel-setting',
+			'channel_setting_section'
+		);
+
+		add_settings_field(
+			'channel_featured_image_enable', // ID
+			__( 'Featured Image', 'telefication' ),
+			array( $this, 'telefication_channel_featured_image_enable_callback' ),
+			'telefication-channel-setting',
+			'channel_setting_section'
+		);
+
+		add_settings_field(
+			'channel_post_type', // ID
+			__( 'Post Types', 'telefication' ),
+			array( $this, 'telefication_channel_post_type_callback' ),
+			'telefication-channel-setting',
+			'channel_setting_section'
+		);
 	}
 
 	/**
@@ -247,8 +287,7 @@ class Telefication_Admin {
 	 */
 	public function general_setting_section_callback() {
 
-		printf( '<p>' . __( 'You can use <a href="%s">your own Telegram Bot</a> or join to %s at Telegram to receive notifications.', 'telefication' ) . '</p>',
-			'?page=telefication-setting&tab=own_bot_options',
+		printf( '<p>' . __( 'You can use <b>your own Telegram Bot</b> or join to %s at Telegram to receive notifications.', 'telefication' ) . '</p>',
 			'<a href="https://t.me/teleficationbot" target="_blank">@teleficationbot</a>' );
 
 	}
@@ -412,5 +451,81 @@ class Telefication_Admin {
 
 	}
 
+	// Channel Setting Page
+
+
+	public function channel_setting_section_callback() {
+
+		echo "<p>" . __( 'Sending new posts notification to your channel!', 'telefication' ) . "<br>";
+	}
+
+	public function telefication_chanel_username_callback() {
+
+		printf(
+			'<input type="text" id="chanel_username" class="half" name="telefication[chanel_username]" value="%s" /> ' .
+			'<p class="description">' . __( 'Please enter your channel username .', 'telefication' ) . '</p>',
+
+			isset( $this->options['chanel_username'] ) ? esc_attr( $this->options['chanel_username'] ) : ''
+		);
+
+	}
+
+
+	public function telefication_channel_notification_template_callback() {
+
+		printf(
+			'<textarea id="channel_notification_template" name="telefication[channel_notification_template]" >%s</textarea> ' .
+			'<p class="description">' . __( 'Please write your channel notification template .', 'telefication' ) . '<br>' .
+			__( 'You can use this variables:', 'telefication' ) . ' {title}, {content}, {expert}, {post_link}, {post_primary_category}' . '</p>',
+
+			isset( $this->options['channel_notification_template'] ) ? esc_attr( $this->options['channel_notification_template'] ) : ''
+		);
+
+
+	}
+
+
+	public function telefication_channel_featured_image_enable_callback() {
+
+
+		if ( isset( $this->options['channel_featured_image_enable'] ) ) {
+			$channel_featured_image_enable_checked = checked( 1, $this->options['channel_featured_image_enable'], false );
+		}
+		/*
+		 * Notify for emails
+		 */
+		printf(
+			'<input class="has-sub" type="checkbox" id="channel_featured_image_enable" name="telefication[channel_featured_image_enable]" value="1" %s/>' .
+			'<label for="channel_featured_image_enable">' . __( 'If enabled notifications sent as image post (if you enable this, your notification template length should not be more than 200 characters)', 'telefication' ) . '</label> ',
+			isset( $channel_featured_image_enable_checked ) ? $channel_featured_image_enable_checked : ''
+		);
+
+
+	}
+
+
+	public function telefication_channel_post_type_callback() {
+
+		$telefication_channel_post_type = [];
+
+		if ( isset( $this->options['telefication_channel_post_type'] ) ) {
+			$telefication_channel_post_type = $this->options['telefication_channel_post_type'];
+		}
+
+
+		foreach ( get_post_types( '', 'names' ) as $post_type ) {
+			$checked = '';
+			if ( array_key_exists( $post_type, $telefication_channel_post_type ) && $telefication_channel_post_type[ $post_type ] === "1" ) {
+				$checked = 'checked';
+			}
+
+			printf( '<div class="one-third">
+			<input class="has-sub" type="checkbox" name="telefication[telefication_channel_post_type][%s]" value="1" %s>%s</div>',
+				$post_type, $checked, $post_type
+
+			);
+		}
+
+	}
 
 }
