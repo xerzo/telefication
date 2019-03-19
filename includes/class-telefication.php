@@ -110,6 +110,8 @@ class Telefication {
 		 * The class responsible for orchestrating the actions and filters of the core plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-telefication-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/Html2TextException.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/Html2Text.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality of the plugin.
@@ -167,19 +169,19 @@ class Telefication {
 
 		// New comment action
 		if ( isset( $this->options['new_comment_notification'] ) && '1' == $this->options['new_comment_notification'] ) {
-			// if woocommerce is active
+
 			$this->loader->add_action( 'wp_insert_comment', $this, 'telefication_action_wp_insert_comment' );
 		}
 
 		// New post action
 		if ( isset( $this->options['new_post_notification'] ) && '1' == $this->options['new_post_notification'] ) {
-			// if woocommerce is active
+
 			$this->loader->add_action( 'transition_post_status', $this, 'telefication_action_publish_post', 10, 3 );
 		}
 
 		// New user action
 		if ( isset( $this->options['new_user_notification'] ) && '1' == $this->options['new_user_notification'] ) {
-			// if woocommerce is active
+
 			$this->loader->add_action( 'user_register', $this, 'telefication_action_user_register', 10 );
 		}
 	}
@@ -216,21 +218,81 @@ class Telefication {
 	 * @param $post
 	 */
 	public function telefication_action_publish_post( $new_status, $old_status, $post ) {
-		if ( 'publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post' ) {
 
-			//notification body
-			$message = get_bloginfo( 'name' ) . ":\n\n";
-			$message .= __( 'New Post: ', 'telefication' ) . "\n-----\n\n";
-			$message .= $post->post_title . "\n\n";
+		// if new post published
+		if ( 'publish' === $new_status && 'publish' !== $old_status ) {
 
-			$message .= site_url();
+			// is post type is post, for notification
+			if ( $post->post_type === 'post' ) {
 
-			$telefication_service = new Telefication_Service( $this->options );
+				//notification body
+				$message = get_bloginfo( 'name' ) . ":\n\n";
+				$message .= __( 'New Post: ', 'telefication' ) . "\n-----\n\n";
+				$message .= $post->post_title . "\n\n";
 
-			if ( $telefication_service->create_url( $message ) ) {
-				$telefication_service->send_notification();
+				$message .= __( 'Post URL: ', 'telefication' ) . get_permalink( $post->ID );
+
+				$telefication_service = new Telefication_Service( $this->options );
+
+				if ( $telefication_service->create_url( $message ) ) {
+					$telefication_service->send_notification();
+				}
+			}
+
+			// if new post to channel is enabled
+			if ( isset( $this->options['send_to_channel_enable'] ) && '1' == $this->options['send_to_channel_enable'] ) {
+				if ( isset( $this->options['channel_username'] ) && ! empty( $this->options['channel_username'] ) ) {
+					if ( isset( $this->options['telefication_channel_post_type'] ) ) {
+
+						$telefication_channel_post_type = $this->options['telefication_channel_post_type'];
+
+						// if post type is allowed
+						if ( array_key_exists( $post->post_type,
+								$telefication_channel_post_type ) && $telefication_channel_post_type[ $post->post_type ] === "1" ) {
+
+							$channel_post = $this->telefication_create_channel_post( $post );
+
+							$telefication_service = new Telefication_Service( $this->options );
+
+							if ( $telefication_service->create_url( $channel_post,
+								$this->options['channel_username'] ) ) {
+								$telefication_service->send_notification();
+							}
+						}
+					}
+				}
 			}
 		}
+
+	}
+
+	/**
+	 * Make channel post by template
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param $post
+	 *
+	 * @return mixed|string
+	 */
+	public function telefication_create_channel_post( $post ) {
+
+		$dictionary = array(
+			'{title}'         => strip_tags( $post->post_title, '<b><i><a><code><pre>' ),
+			'{content}'       => strip_tags( $post->post_content, '<b><i><a><code><pre>' ),
+			'{excerpt}'       => strip_tags( $post->post_excerpt, '<b><i><a><code><pre>' ),
+			'{post_link}'     => strip_tags( wp_get_shortlink( $post->ID ), '<b><i><a><code><pre>' ),
+			'{post_category}' => strip_tags( get_the_category( $post->ID )[0]->name, '<b><i><a><code><pre>' ),
+			'{post_type}'     => strip_tags( $post->post_type, '<b><i><a><code><pre>' )
+		);
+
+		$message = '';
+		if ( isset( $this->options['channel_notification_template'] ) ) {
+			$message = str_replace( array_keys( $dictionary ), $dictionary,
+				urldecode( $this->options['channel_notification_template'] ) );
+		}
+
+		return $message;
 	}
 
 	/**
@@ -239,24 +301,42 @@ class Telefication {
 	 * @since 1.4.0
 	 *
 	 * @param $comment_ID
+	 *
+	 * @return bool
 	 */
-	public function telefication_action_wp_insert_comment( $comment_ID ) {
+	public function telefication_action_wp_insert_comment( $comment_ID) {
+	    
+
+		$status = wp_get_comment_status( $comment_ID );
+
+		if ( $status == 'spam' ) {
+			return false;
+		}
+	
+        
+        
+        
+        $t_t = $comment_ID;
+        $comment_id_s = get_comment( $comment_ID );
+        $title = get_the_title($comment_id_s->comment_post_ID);
+        $d = "Y-m-d g:i:s";
+        $comment_date = get_comment_date( $d, $comment_ID );
+		$author_text = get_comment_author( $comment_ID );
 		$comment_text = get_comment_text( $comment_ID );
 
 		//notification body
-		$message = get_bloginfo( 'name' ) . ":\n\n";
-		$message .= __( 'New Comment: ', 'telefication' ) . "\n-----\n\n";
-		$message .= $comment_text . "\n\n";
+		$message .=  __( '<em>New Comment on</em> <a href="' .get_comment_link( $comment_ID ) .'">' .$title .'</a>', 'telefication' ) . "\n";  
+	    $message .= _('<strong>'.$author_text .'</strong>'). " <em>wrote at</em> ";
+	    $message .= '<i>' .$comment_date .' :</i>' . "\n";
+	    $message .= $comment_text . "\n\n";
 
-		$message .= site_url();
-
+		
 		$telefication_service = new Telefication_Service( $this->options );
 
 		if ( $telefication_service->create_url( $message ) ) {
 			$telefication_service->send_notification();
 		}
 	}
-
 
 	/**
 	 * Add filter callback function for 'wp_email'
@@ -289,7 +369,7 @@ class Telefication {
 
 		// check for adding email body option
 		if ( isset( $this->options['send_email_body'] ) && '1' == $this->options['send_email_body'] ) {
-			$message .= strip_tags( $email_args['message'], '<b><i><a><code><pre>' ) . "\n\n";
+			$message .= Html2Text::convert( $email_args['message'], true ) . "\n\n";
 		}
 
 		$message .= site_url();
@@ -320,12 +400,41 @@ class Telefication {
 		$order      = wc_get_order( $order_id );
 		$order_data = $order->get_data();
 
-		$order_details = ""; //order details
+		$shipping_info = '';
+		if ( isset( $this->options['include_shipping_info'] ) && $this->options['include_shipping_info'] == '1' ) {
 
-		$order_details .= __( 'Name: ', 'telefication' ) . $order_data['billing']['first_name'] . " " . $order_data['billing']['last_name'] . "\n";
-		$order_details .= __( 'City: ', 'telefication' ) . $order_data['billing']['city'] . "\n";
-		$order_details .= __( 'Phone: ', 'telefication' ) . $order_data['billing']['phone'] . "\n";
-		$order_details .= __( 'Total: ', 'telefication' ) . $order_data['total'];
+			$shipping_info .= __( 'Shipping Info:', 'telefication' ) . " \n-----\n";
+
+			$shipping_info .= __( 'Name: ', 'telefication' ) . $order_data['shipping']['first_name'] . " " . $order_data['shipping']['last_name'] . "\n";
+			$shipping_info .= __( 'Country: ', 'telefication' ) . $order_data['shipping']['country'] . "\n";
+			$shipping_info .= __( 'City: ', 'telefication' ) . $order_data['shipping']['city'] . "\n";
+
+			$shipping_info .= __( 'Postcode: ', 'telefication' ) . $order_data['shipping']['postcode'] . "\n";
+			$shipping_info .= __( 'State: ', 'telefication' ) . $order_data['shipping']['state'] . "\n";
+
+			$shipping_info .= __( 'Address 1: ', 'telefication' ) . $order_data['shipping']['address_1'] . "\n";
+			$shipping_info .= __( 'Address 2: ', 'telefication' ) . $order_data['shipping']['address_2'] . "\n\n";
+		}
+
+		$billing_info = '';
+		if ( isset( $this->options['include_billing_info'] ) && $this->options['include_billing_info'] == '1' ) {
+
+			$billing_info .= __( 'Billing Info:', 'telefication' ) . " \n-----\n";
+
+			$billing_info .= __( 'Name: ', 'telefication' ) . $order_data['billing']['first_name'] . " " . $order_data['billing']['last_name'] . "\n";
+
+			$billing_info .= __( 'Email: ', 'telefication' ) . $order_data['billing']['email'] . "\n";
+			$billing_info .= __( 'Phone: ', 'telefication' ) . $order_data['billing']['phone'] . "\n";
+
+			$billing_info .= __( 'Country: ', 'telefication' ) . $order_data['billing']['country'] . "\n";
+			$billing_info .= __( 'City: ', 'telefication' ) . $order_data['billing']['city'] . "\n";
+
+			$billing_info .= __( 'Postcode: ', 'telefication' ) . $order_data['billing']['postcode'] . "\n";
+			$billing_info .= __( 'State: ', 'telefication' ) . $order_data['billing']['state'] . "\n";
+
+			$billing_info .= __( 'Address 1: ', 'telefication' ) . $order_data['billing']['address_1'] . "\n";
+			$billing_info .= __( 'Address 2: ', 'telefication' ) . $order_data['billing']['address_2'] . "\n\n";
+		}
 
 
 		$items = ""; // items_detail
@@ -344,10 +453,11 @@ class Telefication {
 		//notification body
 		$message = get_bloginfo( 'name' ) . ":\n\n";
 		$message .= __( 'New order: ', 'telefication' ) . "\n-----\n\n";
-		$message .= $items . "\n\n";
+		$message .= $items . "\n";
+		$message .= __( 'Total: ', 'telefication' ) . $order_data['total'] . "\n\n";
 
-		$message .= __( 'Billing data: ', 'telefication' ) . "\n-----\n\n";
-		$message .= $order_details . "\n\n";
+		$message .= $shipping_info;
+		$message .= $billing_info;
 
 		$message .= site_url();
 
@@ -375,8 +485,8 @@ class Telefication {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'init_telefication_page' );
 
 		// Since 1.3.0
-		$this->loader->add_action( 'wp_ajax_send_test_message', $this, 'send_test_message' );
-		$this->loader->add_action( 'wp_ajax_get_chat_id', $this, 'get_chat_id' );
+		$this->loader->add_action( 'wp_ajax_send_telefication_test_message', $this, 'send_test_message' );
+		$this->loader->add_action( 'wp_ajax_get_telefication_chat_id', $this, 'get_chat_id' );
 
 		// add link of Telefication setting page in plugins page
 		$this->loader->add_filter( 'plugin_action_links_' . TELEFICATION_BASENAME, $plugin_admin, 'add_action_links' );
@@ -420,7 +530,8 @@ class Telefication {
 		$telefication_service                     = new Telefication_Service( $this->options );
 		$telefication_service->telegram_bot_token = $_REQUEST['bot_token'];
 
-		echo $telefication_service->get_chat_id();
+		echo empty( $telefication_service->get_chat_id() ) ? __( 'Please send something to your Bot (e.g. say hello :) ) so Telefication can get your id.',
+			'telefication' ) : $telefication_service->get_chat_id();
 		die;
 	}
 
